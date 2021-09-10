@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8" />
+  <html lang="fr">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css"/>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'reviews/style.css' %}">
+  <title>LITReview</title>
+</head>
+
+<body>
+  <header class="d-flex justify-content-center py-3">
+    <h1>LITReview</h1>
+  </header>
+
+  <div class="log-page">
+    <section>
+      <h2>Inscrivez-vous maintenant</h2>
+      <p><button type="button" onclick="window.location.href='./register';">S'inscrire</button></p>
+    </section>
+
+    <section>
+      <h2>Connectez-vous</h2>
+      <p><input type="texte" value="Nom d'utilisateur" /></p>
+      <p><input type="texte" value="Mot de passe" /></p>
+      <p><button type="button">Se connecter</button></p>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</body>
