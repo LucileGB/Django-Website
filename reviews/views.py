@@ -1,5 +1,7 @@
 from itertools import chain
 
+from django import forms
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import CharField, Value
 from django.shortcuts import render
@@ -7,14 +9,14 @@ from django.template import loader
 
 from .models import Ticket, Review
 
-def login(request):
-    return render (request, 'reviews/login.html')
-
-def register(request):
-    return render (request, 'reviews/register.html')
+class Ticket_Form(forms.Form):
+        title = forms.CharField(max_length=128, label='Titre')
+        description = forms.CharField(max_length=2048, blank=True, label='Description')
 
 #@login_required()
 def new_ticket(request):
+    if request.method == 'POST':
+        ticket_form ==
     return render (request, 'reviews/new_ticket.html')
 
 def ticket(request, ticket_id):
@@ -24,7 +26,9 @@ def ticket(request, ticket_id):
         raise Http404("Ce ticket n'existe pas")
     return render(request, 'reviews/snippets/ticket.html', {'ticket': ticket})
 
-#@login_required()
+def subscriptions(request):
+    return render(request, 'reviews/subscriptions.html')
+
 def review(request, review_id):
     try:
         review = Review.objects.get(pk=review_id)
