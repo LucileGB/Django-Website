@@ -1,0 +1,58 @@
+/* General pages logic */
+h2 {
+  padding-bottom: 10%;
+}
+
+/* Specific pages layout */
+.log-page {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.log-page > section {
+
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.register-page {
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.register-btns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* For centered layouts - stops working if the name is changed. */
+#new-ticket-page {
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.log-page > section {
+
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/*CSS dysfunctions from here but we will be brave*/
+.feed-page {
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+}

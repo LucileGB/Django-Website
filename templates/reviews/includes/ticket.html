@@ -1,0 +1,14 @@
+  <header class="ticket-header">
+    <p>{{ ticket.user }} a demandé une critique.</p>
+    <p>{{ ticket.time_created }}</p>
+  </header>
+  <section class="ticket-page">
+      <h3>{{ ticket.title }}</h3>
+      <p>{{ ticket.description }}</p>
+
+      {% if ticket.image %}
+      <p><img src="placeholder"/></p>
+      {% endif %}
+
+      <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{ticket.id}}';"> Répondre à ce ticket</button>
+  </section>

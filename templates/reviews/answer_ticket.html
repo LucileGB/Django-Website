@@ -1,0 +1,16 @@
+{% extends "base_rev.html" %}
+
+{% block title %}LITReview - Répondre{% endblock title %}
+
+{% block content %}
+
+  <section id="new-review-page">
+      <h1>Créer une critique en réponse à {{ticket.title}}</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <button type="submit"">Poster</button>
+    </form>
+  </section>
+
+{% endblock content %}

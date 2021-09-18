@@ -1,0 +1,68 @@
+{% extends "base_rev.html" %}
+
+{% block title %}LITReview - Mes abonnements{% endblock title %}
+
+{% block content %}
+
+    <section id="new-ticket-page">
+      <section>
+        <h2>Suivre d'autres utilisateurs</h2>
+          <form action="{% url 'subscriptions' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="username">
+            <input type="submit" name="submit" value="Rechercher un utilisateur">
+          </form>
+
+          {% if results %}
+            {% if results|length == 1 %}
+              <p>Nous avons trouvé {{results|length}} utilisateur correspondant à votre recherche :</p>
+            {% else %}
+              <p>Nous avons trouvé {{results|length}} utilisateurs correspondant à votre recherche :</p>
+            {% endif %}
+
+          {% endif %}
+
+          {% for result in results %}
+            {% if request.user != result %}
+              {% if result %}
+                <p><button>S'abonner</button> {{result}}</p>
+              {% endif %}
+            {% else %}
+              <p><button>Se désabonner</button> {{result}}</p>
+
+            {% endif %}
+
+          {% endfor %}
+
+      </section>
+
+      <section>
+        <h2>Abonnements</h2>
+          {% if following|length == 0 %}
+            <p>Aucun abonnement pour le moment !</p>
+          {% endif %}
+          {% for relationship in following %}
+              <div class="following">
+                <div class="row mb-3">
+                  <div class="col-md-8 themed-grid-col"><p>{{relationship.user}}</p></div>
+                  <div class="col-md-4 themed-grid-col"><p><input type="button" id={{relationship.id}} value="Se désabonner"/><p></div>
+                </div>
+              </div>
+          {% endfor %}
+      </section>
+
+      <section>
+        <h2>Abonnés</h2>
+
+        {% if not followed|length == 0 %}
+          <p>Aucun abonné pour le moment !</p>
+        {% endif %}
+
+        {% for relationship in followed %}
+            <p>{{relationship.followded_user}}</p>
+        {% endfor %}
+      </section>
+
+    </section>
+
+{% endblock content %}

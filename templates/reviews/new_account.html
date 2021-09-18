@@ -1,0 +1,21 @@
+{% extends "base_log.html" %}
+
+{% block title %}LITReview - Se connecter{% endblock %}
+
+  {% block content %}
+  <div class="register-page">
+    <section>
+      <h2>Inscrivez-vous</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+      <div class="register-btns">
+        <p><button type="button" onclick="window.location.href='login';">Retourner</button></p>
+        <p><button type="submit">S'inscrire</button></p>
+      </div>
+    </form>
+
+    </section>
+
+  </div>
+  {% endblock content %}

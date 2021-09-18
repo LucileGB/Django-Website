@@ -1,0 +1,23 @@
+<header class="review-header">
+  <p>{{ review.user }} a posté une critique.</p>
+  <p>{{ review.time_created }}</p>
+</header>
+
+<section class="review-page">
+    <h3>{{ review.headline }}</h3>
+    <p>{{ review.rating }}</p>
+
+    {% if review.body %}
+      <p>{{ review.body }}</p>
+    {% endif %}
+
+    <section class="inner-ticket">
+        <h3>{{ review.ticket.title }}</h3>
+        <p>{{ review.ticket.description }}</p>
+
+        {% if review.ticket.image %}
+        <p><img src="placeholder"/></p>
+        {% endif %}
+    </section>
+
+</section>

@@ -1,0 +1,27 @@
+{% extends "base_rev.html" %}
+
+{% block title %}LITReview - Mon flux{% endblock title %}
+
+{% block content %}
+    <section class="feed-page" id="new-ticket-page">
+      <header>
+        <p><button type="button" onclick="window.location.href='/reviews/new_ticket';">Demander une critique</button></p>
+        <p><button type="button" onclick="window.location.href='/reviews/new_review';">Créer une critique</button></p>
+      </header>
+
+    <section class="dashboard">
+ <!-- If len(post) == 0, afficher une invitation à suivre d'autres utilisateurs  -->
+     {% if not posts %}
+         <p>Votre flux est vide pour le moment. Pourquoi ne pas commencer à suivre d'autres utilisateurs ?</p>
+       {% endif %}
+      {% for post in posts %}
+          {% if post.content_type == 'TICKET' %}
+              {% include './includes/ticket.html' with ticket=post %}
+          {% elif post.content_type == 'REVIEW' %}
+              {% include './includes/review.html'  with review=post%}
+          {% endif %}
+      {% endfor %}
+    </section>
+    </section>
+
+{% endblock content %}

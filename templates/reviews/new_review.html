@@ -1,0 +1,19 @@
+{% extends "base_rev.html" %}
+
+{% block title %}LITReview - Poster une critique{% endblock title %}
+
+{% block content %}
+    <section class="sub-page">
+
+      {{request.user.username}}
+ <!-- If len(post) == 0, afficher une invitation à suivre d'autres utilisateurs  -->
+      {% for post in posts %}
+          {% if post.content_type == 'TICKET' %}
+              {% include 'ticket_snippet.html' %}
+          {% elif post.content_type == 'REVIEW' %}
+              {% include 'review_snippet.html' %}
+          {% endif %}
+      {% endfor %}
+    </section>
+
+{% endblock content %}
