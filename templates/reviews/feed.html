@@ -3,16 +3,21 @@
 {% block title %}LITReview - Mon flux{% endblock title %}
 
 {% block content %}
-    <section class="feed-page" id="new-ticket-page">
-      <header>
-        <p><button type="button" onclick="window.location.href='/reviews/new_ticket';">Demander une critique</button></p>
-        <p><button type="button" onclick="window.location.href='/reviews/new_review';">Créer une critique</button></p>
+    <section class="d-flex flex-column justify-content-center align-items-center">
+      <header class="d-flex flex-row mb-4">
+        <p><button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold" onclick="window.location.href='/reviews/new_ticket';">Demander une critique</button></p>
+        <p><button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold" onclick="window.location.href='/reviews/new_review';">Créer une critique</button></p>
       </header>
 
-    <section class="dashboard">
+    <section class="d-flex flex-column justify-content-center align-items-center w-75">
+      {% if messages %}
+          {% for message in messages %}
+          <p class="text-success fs-5 my-3 mx-3">{{ message }}</p>
+          {% endfor %}
+      {% endif %}
  <!-- If len(post) == 0, afficher une invitation à suivre d'autres utilisateurs  -->
      {% if not posts %}
-         <p>Votre flux est vide pour le moment. Pourquoi ne pas commencer à suivre d'autres utilisateurs ?</p>
+         <p>Bienvenue, {{request.user.username}} ! Votre flux est vide pour le moment. Pourquoi ne pas commencer à suivre d'autres utilisateurs ?</p>
        {% endif %}
       {% for post in posts %}
           {% if post.content_type == 'TICKET' %}

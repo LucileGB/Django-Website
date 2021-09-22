@@ -7,15 +7,30 @@
     <section>
       <h2>Inscrivez-vous</h2>
       <form method="post">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="text-danger">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         {% csrf_token %}
-        {{form.as_p}}
+        {{form.username.helptext}}
+        <p class="lead">Nom d'utilisateur :</p>
+        <p>{{ form.username }}</p>
+        <p class="lead">Mot de passe :</p>
+        <p>{{ form.password1 }}</p>
+        <p class="lead">Confirmez votre mot de passe :</p>
+        <p>{{ form.password2 }}</p>
       <div class="register-btns">
-        <p><button type="button" onclick="window.location.href='login';">Retourner</button></p>
-        <p><button type="submit">S'inscrire</button></p>
+        <p><button type="button" onclick="window.location.href='login';"  class="btn btn-lg btn-secondary fw-bold m-1 border-white bg-warning text-dark">Retourner</button></p>
+        <p><button type="submit"  class="btn btn-lg btn-secondary fw-bold m-1 border-white bg-warning text-dark">S'inscrire</button></p>
       </div>
     </form>
 
     </section>
 
   </div>
+
   {% endblock content %}

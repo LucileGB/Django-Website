@@ -1,14 +1,35 @@
-  <header class="ticket-header">
-    <p>{{ ticket.user }} a demandé une critique.</p>
-    <p>{{ ticket.time_created }}</p>
+<div class="bg-white text-dark container-auto w-100 px-4 py-2 card mb-4 rounded-3 border border-2 border-warning">
+  <header>
+    <div class="d-flex flex-column border-bottom lh-1">
+      <p class="text-end fst-italic opacity-75">{{ ticket.time_created }}</p>
+
+      {% if ticket.user != request.user %}
+      <p>{{ ticket.user }} a demandé une critique.</p>
+
+      {% else %}
+      <p> Vous avez demandé une critique.</p>
+
+      {% endif %}
+    </div>
   </header>
-  <section class="ticket-page">
-      <h3>{{ ticket.title }}</h3>
+  <section>
+      <h3 class="my-4">{{ ticket.title }}</h3>
       <p>{{ ticket.description }}</p>
 
-      {% if ticket.image %}
+      {% if ticket.image %}9*
       <p><img src="placeholder"/></p>
       {% endif %}
 
-      <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{ticket.id}}';"> Répondre à ce ticket</button>
+    <div class="d-flex flex-wrap justify-content-end">
+        {% if ticket.user != request.user %}
+      <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{ticket.id}}';" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold"> Répondre à ce ticket</button>
+        {% else %}
+      <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{ticket.id}}';">Editer</button>
+        <form action="ticket_delete/{{ticket.id}}/" method="post">
+            {% csrf_token %}
+            <p><input type="submit" value="Delete ticket"/></p>
+        </form>
+        {% endif %}
+    </div>
   </section>
+</div>

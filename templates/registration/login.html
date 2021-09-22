@@ -4,26 +4,35 @@
 
   {% block content %}
 
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
 
   <div class="log-page">
     <section>
-      <h2>Inscrivez-vous maintenant</h2>
-      <p><button type="button" onclick="window.location.href='/reviews/new_account';">S'inscrire</button></p>
+      <h2 class="m-5">Inscrivez-vous maintenant</h2>
+      <p><button type="button" class="btn btn-lg btn-secondary fw-bold border-white bg-warning text-dark" onclick="window.location.href='/reviews/new_account';">S'inscrire</button></p>
     </section>
 
-    <section>
-      <h2>Connectez-vous</h2>
+    <section class="m-5">
+      <h2 class="m-2">Connectez-vous</h2>
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li class="text-danger">{{ message }}</li>
+          {% endfor %}
+      {% endif %}
       <form method="post">
         {% csrf_token %}
-        <p>Nom d'utilisateur :</p>
-        <p>{{ form.username }}</p>
-        <p>Mot de passe :</p>
-        <p>{{ form.password }}</p>
-      <button type="submit">Se connecter</button>
+          <p class="lead">Nom d'utilisateur :</p>
+          <p>{{ form.username }}</p>
+          <p class="lead">Mot de passe :</p>
+          <p>{{ form.password }}</p>
+      <button class="btn btn-lg btn-secondary fw-bold m-1 border-white bg-warning text-dark" type="submit">Se connecter</button>
+
+      {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+      {% endif %}
+
       </form>
     </section>
   </div>
-  {% endblock content %}
+
+{% endblock %}

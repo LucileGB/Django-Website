@@ -4,31 +4,42 @@
 
 {% block content %}
 
-    <section id="new-ticket-page">
-      <section>
-        <h2>Suivre d'autres utilisateurs</h2>
-          <form action="{% url 'subscriptions' %}" method="POST">
+    <section class="d-flex flex-column align-items-center mx-5">
+      <section class="my-4">
+        <h2 class="d-flex justify-content-center mb-4">Suivre d'autres utilisateurs</h2>
+          <form class="d-flex align-item-center action="{% url 'subscriptions' %}" method="POST">
             {% csrf_token %}
-            <input type="text" name="username">
-            <input type="submit" name="submit" value="Rechercher un utilisateur">
+            <input type="text" name="username" class="mx-4 fs-5">
+            <input type="submit" name="submit" class="btn btn-outline-white text-dark bg-warning me-2 fs-5 fw-bold" value="Rechercher un utilisateur">
           </form>
 
-          {% if results %}
-            {% if results|length == 1 %}
-              <p>Nous avons trouvé {{results|length}} utilisateur correspondant à votre recherche :</p>
-            {% else %}
-              <p>Nous avons trouvé {{results|length}} utilisateurs correspondant à votre recherche :</p>
-            {% endif %}
+          {% if messages %}
+              {% for message in messages %}
+              <p class="text-warning fs-5 my-3 mx-3">{{ message }}</p>
+              {% endfor %}
+          {% endif %}
 
+          {% if results|length == 1 %}
+              <p class="mx-2 my-3 fs-5">Nous avons trouvé {{results|length}} utilisateur correspondant à votre recherche :</p>
+          {% elif results|length > 1 %}
+              <p class="mx-2 my-3 fs-5">Nous avons trouvé {{results|length}} utilisateurs correspondant à votre recherche :</p>
           {% endif %}
 
           {% for result in results %}
-            {% if request.user != result %}
-              {% if result %}
-                <p><button>S'abonner</button> {{result}}</p>
-              {% endif %}
+            {% if request.user == result %}
+              <p>{{result}} (C'est vous !)</p>
+
+            {% elif result.id not in friends %}
+              <form action="follow/{{result.id}}/" method="post">
+                  {% csrf_token %}
+                  <p><input type="submit" value="S'abonner" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-3 fs-6 fw-bold"/> {{result}}</p>
+              </form>
+
             {% else %}
-              <p><button>Se désabonner</button> {{result}}</p>
+            <form action="unfollow/{{relationship.id}}/" method="post">
+                {% csrf_token %}
+                <p><input type="submit" value="Se désabonner" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-3 fs-6 fw-bold"/> {{result}}</p>
+            </form>
 
             {% endif %}
 
@@ -36,33 +47,34 @@
 
       </section>
 
-      <section>
-        <h2>Abonnements</h2>
-          {% if following|length == 0 %}
-            <p>Aucun abonnement pour le moment !</p>
-          {% endif %}
-          {% for relationship in following %}
-              <div class="following">
-                <div class="row mb-3">
-                  <div class="col-md-8 themed-grid-col"><p>{{relationship.user}}</p></div>
-                  <div class="col-md-4 themed-grid-col"><p><input type="button" id={{relationship.id}} value="Se désabonner"/><p></div>
-                </div>
-              </div>
-          {% endfor %}
-      </section>
-
-      <section>
-        <h2>Abonnés</h2>
-
-        {% if not followed|length == 0 %}
+      <section class="my-4 container-auto w-75">
+        <h2 class="d-flex justify-content-center mb-4">Abonnements</h2>
+        {% if followed|length == 0 %}
           <p>Aucun abonné pour le moment !</p>
         {% endif %}
-
         {% for relationship in followed %}
-            <p>{{relationship.followded_user}}</p>
+          <div class="d-flex flex-row flex-wrap align-items-end container-auto px-4 py-1 card mb-3 rounded-3 border border-2 border-warning bg-white text-dark">
+            <p class="me-auto p-1 fs-5 fw-bold">{{relationship.followed_user}}</p>
+            <form action="unfollow/{{relationship.id}}/" method="post">
+                {% csrf_token %}
+                <p><input type="submit" value="Se désabonner" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-3 fs-6 fw-bold"/>
+            </form>
+            </div>
         {% endfor %}
       </section>
 
+      <section class="my-4 container-auto w-75">
+        <h2 class="d-flex justify-content-center mb-4">Abonnés</h2>
+        {% if following|length == 0 %}
+          <p>Aucun abonnement pour le moment !</p>
+        {% endif %}
+
+        {% for relationship in following %}
+            <div class="d-flex flex-row flex-wrap container-auto px-4 py-1 card mb-3 rounded-3 border border-2 border-warning bg-white text-dark">
+              <div class="me-2  fs-5 fw-bold"><p>{{relationship.user}}</p></div>
+            </div>
+        {% endfor %}
+      </section>
     </section>
 
 {% endblock content %}

@@ -5,16 +5,17 @@
   <html lang="fr">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css"/>
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'reviews/style.css' %}">
   <title>{% block title %}LITReview{% endblock %}</title></title>
 </head>
 
-<body>
-  <header class="d-flex justify-content-center py-3">
-    <h1>LITReview</h1>
-  </header>
+<body class="h-100 text-center text-warning bg-dark">
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="mb-auto">
+      <h1 class="m-5 fw-bold text-warning">LITReview</h1>
+    </header>
+</div>
 
   {% block content %}
 

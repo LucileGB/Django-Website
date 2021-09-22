@@ -6,15 +6,21 @@
 <section class="review-page">
     <h3>{{ review.headline }}</h3>
     <p>{{ review.rating }}</p>
-
     {% if review.body %}
       <p>{{ review.body }}</p>
+    {% endif %}
+    {% if review.user == request.user %}
+  <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{review.id}}';">Editer</button>
+    <form action="review_delete/{{review.id}}/" method="post">
+        {% csrf_token %}
+        <p><input type="submit" value="Supprimer" />
+        <input type="submit" >
+    </form>
     {% endif %}
 
     <section class="inner-ticket">
         <h3>{{ review.ticket.title }}</h3>
         <p>{{ review.ticket.description }}</p>
-
         {% if review.ticket.image %}
         <p><img src="placeholder"/></p>
         {% endif %}

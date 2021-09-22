@@ -12,8 +12,17 @@ class Ticket(models.Model):
 #    image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
 
+    @staticmethod
+    def get_users_viewable_tickets(request):
+        return get_users_viewable_content(request, Ticket)
+
+    @staticmethod
+    def get_users_own_tickets(request):
+        return Ticket.objects.filter(user__id__contains=request.user.id)
+
     def __str__(self):
         return self.title
+
 
 class Review(models.Model):
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
@@ -25,6 +34,14 @@ class Review(models.Model):
     headline = models.CharField(max_length=128)
     body = models.CharField(max_length=8192, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
+
+    @staticmethod
+    def get_users_viewable_reviews(request):
+        return get_users_viewable_content(request, Review)
+
+    @staticmethod
+    def get_users_own_reviews(request):
+        return Review.objects.filter(user__id__contains=request.user.id)
 
     def __str__(self):
         return self.headline
@@ -40,3 +57,16 @@ class UserFollows(models.Model):
         # ensures we don't get multiple UserFollows instances
         # for unique user-user_followed pairs
         unique_together = ('user', 'followed_user')
+
+#Model-related utilities to fetch view components
+def user_follows(request):
+    follows = UserFollows.objects.filter(user__id__contains=request.user.id)
+    friends = [followed.followed_user.id for followed in follows]
+    return(friends)
+
+def get_users_viewable_content(request, Target):
+    friends = user_follows(request)
+    viewable_content = []
+    for friend in friends:
+        viewable_content.append(Target.objects.filter(user__id__contains=friend))
+    return viewable_content

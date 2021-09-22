@@ -1,19 +1,20 @@
 {% extends "base_rev.html" %}
 
-{% block title %}LITReview - Poster une critique{% endblock title %}
+{% block title %}LITReview - Poster une nouvelle critique {% endblock title %}
 
 {% block content %}
-    <section class="sub-page">
 
-      {{request.user.username}}
- <!-- If len(post) == 0, afficher une invitation à suivre d'autres utilisateurs  -->
-      {% for post in posts %}
-          {% if post.content_type == 'TICKET' %}
-              {% include 'ticket_snippet.html' %}
-          {% elif post.content_type == 'REVIEW' %}
-              {% include 'review_snippet.html' %}
-          {% endif %}
-      {% endfor %}
-    </section>
+  <section id="new-review-page">
+    <h1>Créer une nouvelle critique</h1>
+      <h2>Livre/Article</h2>
+        <form method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ forms.ticket_form.as_p }}
+
+      <label><h2>Critique</h2></label>
+        {{ forms.review_form.as_p }}
+        <button type="submit"">Poster</button>
+      </form>
+  </section>
 
 {% endblock content %}
