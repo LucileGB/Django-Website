@@ -1,7 +1,3 @@
-/* General pages logic */
-h2 {
-  padding-bottom: 10%;
-}
 
 /* Specific pages layout */
 .log-page {
@@ -47,12 +43,5 @@ h2 {
   display: flex;
   flex-flow: column;
   flex-wrap: wrap;
-  align-items: center;
-}
-
-/*CSS dysfunctions from here but we will be brave*/
-.feed-page {
-  display:flex;
-  justify-content: space-around;
   align-items: center;
 }

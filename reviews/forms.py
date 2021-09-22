@@ -12,12 +12,14 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'password1', 'password2')
 
-class AnswerTicket(forms.ModelForm):
-    class Meta:
-        model = Review
-        fields = ('headline', 'rating', 'body')
 
 class NewTicket(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ('title', 'description')
+        fields = ('title', 'description', 'image')
+
+
+class AnswerTicket(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ('headline', 'rating', 'body')

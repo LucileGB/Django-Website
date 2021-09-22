@@ -4,30 +4,36 @@
       <p class="text-end fst-italic opacity-75">{{ ticket.time_created }}</p>
 
       {% if ticket.user != request.user %}
-      <p>{{ ticket.user }} a demandé une critique.</p>
+      <p class="mx-3">{{ ticket.user }} a demandé une critique.</p>
 
       {% else %}
-      <p> Vous avez demandé une critique.</p>
+      <p class="mx-3"> Vous avez demandé une critique.</p>
 
       {% endif %}
     </div>
   </header>
   <section>
-      <h3 class="my-4">{{ ticket.title }}</h3>
-      <p>{{ ticket.description }}</p>
+    <div class="d-flex flex-wrap flex-row align-items-start">
+    {% if ticket.image %}
+      <p><img src="{{ticket.image.url}}" alt="Couverture correspondant à {{ticket.title}}" class="img-fluid max-width: 25% img-thumbnail my-2"/></p>
+    {% endif %}
 
-      {% if ticket.image %}9*
-      <p><img src="placeholder"/></p>
-      {% endif %}
+      <div class="d-flex flex-wrap flex-column justify-content-end mx-3">
+        <h3 class="text-end my-4">{{ ticket.title }}</h3>
 
-    <div class="d-flex flex-wrap justify-content-end">
-        {% if ticket.user != request.user %}
+          <p>{{ ticket.description }}</p>
+      </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap justify-content-end align-items-end">
+
+      {% if ticket.user != request.user %}
       <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{ticket.id}}';" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold"> Répondre à ce ticket</button>
+
         {% else %}
-      <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{ticket.id}}';">Editer</button>
-        <form action="ticket_delete/{{ticket.id}}/" method="post">
-            {% csrf_token %}
-            <p><input type="submit" value="Delete ticket"/></p>
+        <p><button type="button" onclick="window.location.href='/reviews/ticket_edit/{{ticket.id}}';" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold">Editer</button>
+          <form action="ticket_delete/{{ticket.id}}/" method="post">
+              {% csrf_token %}
+        <p><input type="submit" value="Supprimer" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold"/></p>
         </form>
         {% endif %}
     </div>

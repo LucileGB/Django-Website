@@ -3,7 +3,7 @@
   <p>{{ review.time_created }}</p>
 </header>
 
-<section class="review-page">
+<section class="bg-white text-dark container-auto w-100 px-4 py-2 card mb-4 rounded-3 border border-2 border-warning">
     <h3>{{ review.headline }}</h3>
     <p>{{ review.rating }}</p>
     {% if review.body %}
@@ -19,11 +19,7 @@
     {% endif %}
 
     <section class="inner-ticket">
-        <h3>{{ review.ticket.title }}</h3>
-        <p>{{ review.ticket.description }}</p>
-        {% if review.ticket.image %}
-        <p><img src="placeholder"/></p>
-        {% endif %}
+      {% include './ticket.html' with ticket=review.ticket %}
     </section>
 
 </section>

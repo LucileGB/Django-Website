@@ -8,11 +8,10 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-
-
 from django.db.models import CharField, Value
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
+from django.views.generic.edit import UpdateView
 
 from .models import Ticket, Review, UserFollows, user_follows
 
@@ -21,10 +20,7 @@ from .models import Ticket, Review, UserFollows, user_follows
 def answer_ticket(request, ticket_id):
     new_review = None
 
-    try:
-        ticket = Ticket.objects.get(pk=ticket_id)
-    except Ticket.DoesNotExist:
-        raise Http404("Ce ticket n'existe pas.")
+    ticket = get_object_or_404(Ticket, pk=ticket_id)
 
     if request.method == 'POST':
         review_form = AnswerTicket(data=request.POST)
@@ -48,7 +44,7 @@ def new_ticket(request):
     new_ticket = None
 
     if request.method == 'POST':
-        ticket_form = NewTicket(data=request.POST)
+        ticket_form = NewTicket(request.POST, request.FILES)
 
         if ticket_form.is_valid():
             new_ticket = ticket_form.save(commit=False)
@@ -60,28 +56,6 @@ def new_ticket(request):
         ticket_form = NewTicket()
 
     return render(request, 'reviews/new_ticket.html', {'ticket_form': ticket_form, 'new_ticket': new_ticket})
-
-#NON-FUNCTIONAL
-@login_required()
-def new_review(request):
-    new_ticket = None
-    new_review = None
-    form_new = {"review_form": review_form, "ticket_form": ticket_form}
-
-    if request.method == 'POST':
-        ticket_form = NewTicket(data=request.POST)
-        review_form = AnswerTicket(data=request.POST)
-
-        if ticket_form.is_valid():
-            new_ticket = ticket_form.save(commit=False)
-            new_ticket.user = request.user
-            new_ticket.save()
-            return redirect('own_posts')
-
-    else:
-        ticket_form = NewTicket()
-
-    return render(request, 'reviews/new_review.html', {'form_new': form_new})
 
 @login_required()
 def accueil(request):
@@ -222,3 +196,67 @@ def follow(request, followee_id):
         return redirect('/')
 
     return render(request, 'reviews/subscriptions.html', {'follow': follow})
+
+@login_required
+def ticket_edit(request, ticket_id):
+    original = get_object_or_404(Ticket, pk=ticket_id)
+    if request.method == "POST":
+        form = NewTicket(request.POST, request.FILES)
+
+        if form.is_valid():
+            updated = form.save(commit=False)
+            updated.ticket = ticket
+            original.title = updated.title
+            original.description = updated.description
+            original.image = updated.image
+            original.save()
+            return redirect('/')
+
+    else:
+        form = NewTicket()
+
+    return render(request, 'reviews/ticket_edit.html', {'form': form,
+                'ticket_id': ticket_id})
+
+@login_required
+def review_edit(request, review_id):
+    original = get_object_or_404(Review, pk=review_id)
+    if request.method == "POST":
+        form = AnswerTicket(request.POST)
+
+        if form.is_valid():
+            updated = form.save(commit=False)
+            updated.review = review
+            original.headline = updated.headline
+            original.rating = updated.rating
+            original.body = updated.body
+            original.save()
+            return redirect('/')
+
+    else:
+        form = AnswerTicket()
+
+    return render(request, 'reviews/review_edit.html', {'form': form,
+                'review_id': review_id})
+
+#NON-FUNCTIONAL
+@login_required()
+def new_review(request):
+    new_ticket = None
+    new_review = None
+    form_new = {"review_form": review_form, "ticket_form": ticket_form}
+
+    if request.method == 'POST':
+        ticket_form = NewTicket(data=request.POST)
+        review_form = AnswerTicket(data=request.POST)
+
+        if ticket_form.is_valid():
+            new_ticket = ticket_form.save(commit=False)
+            new_ticket.user = request.user
+            new_ticket.save()
+            return redirect('own_posts')
+
+    else:
+        ticket_form = NewTicket()
+
+    return render(request, 'reviews/new_review.html', {'form_new': form_new})

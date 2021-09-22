@@ -5,11 +5,11 @@
 {% block content %}
 
   <section id="new-ticket-page">
-    <h1>Créer un ticket</h1>
+    <h1>Editer un ticket</h1>
       <form method="post" enctype="multipart/form-data">>
         {% csrf_token %}
-        {{ ticket_form.as_p }}
-        <button type="submit"">Poster</button>
+        {{ form.as_p }}
+        <button type="submit">Poster</button>
       </form>
   </section>
 

@@ -18,13 +18,13 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <h1 class="m-4 px-5"><a class="text-decoration-none fw-bold text-warning" href="./own_posts">LITReview</a></h1>
+          <h1 class="m-4 px-5"><a class="text-decoration-none fw-bold text-warning" href="{% url 'own_posts' %}">LITReview</a></h1>
         </ul>
 
         <div class="text-end px-5">
-          <button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold", onClick="window.location.href='./'">Flux</button>
-          <button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold", onClick="window.location.href='new_ticket'">Poster</button>
-          <button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold", onClick="window.location.href='subscriptions'">Abonnements</button>
+          <button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold", onClick="window.location.href='{% url 'accueil' %}'">Flux</button>
+          <button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold", onClick="window.location.href='{% url 'new_ticket' %}'">Poster</button>
+          <button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold", onClick="window.location.href='{% url 'subscriptions' %}'">Abonnements</button>
           <button type="button" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold" onClick="window.location.href = '{% url 'logout' %}'">Se déconnecter</button>
 
         </div>
