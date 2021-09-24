@@ -20,6 +20,9 @@ class NewTicket(forms.ModelForm):
 
 
 class AnswerTicket(forms.ModelForm):
+    headline = forms.CharField(widget=forms.TextInput(attrs={'size': '50'}))
+    rating = forms.IntegerField(widget=forms.NumberInput(attrs={'size': '3', 'min': '1','max': '5'}))
+    body = forms.CharField(widget=forms.Textarea(attrs={'cols': '75', 'rows': '10'}))
     class Meta:
         model = Review
         fields = ('headline', 'rating', 'body')

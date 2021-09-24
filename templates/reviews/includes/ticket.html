@@ -13,12 +13,12 @@
     </div>
   </header>
   <section>
-    <div class="d-flex flex-wrap flex-row align-items-start">
+    <div class="d-flex flex-row align-items-start">
     {% if ticket.image %}
       <p><img src="{{ticket.image.url}}" alt="Couverture correspondant à {{ticket.title}}" class="img-fluid max-width: 25% img-thumbnail my-2"/></p>
     {% endif %}
 
-      <div class="d-flex flex-wrap flex-column justify-content-end mx-3">
+      <div class="d-flex flex-column justify-content-end mx-3 text-wrap">
         <h3 class="text-end my-4">{{ ticket.title }}</h3>
 
           <p>{{ ticket.description }}</p>

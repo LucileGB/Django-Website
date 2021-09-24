@@ -35,7 +35,7 @@ def answer_ticket(request, ticket_id):
     else:
         review_form = AnswerTicket()
 
-    return render(request, 'reviews/answer_ticket.html', {'ticket': ticket,
+    return render(request, 'reviews/ticket_answer.html', {'ticket': ticket,
                 'review_form': review_form, 'new_review': new_review, 'ticket_id': ticket_id})
 
 
@@ -55,7 +55,7 @@ def new_ticket(request):
     else:
         ticket_form = NewTicket()
 
-    return render(request, 'reviews/new_ticket.html', {'ticket_form': ticket_form, 'new_ticket': new_ticket})
+    return render(request, 'reviews/ticket_create.html', {'ticket_form': ticket_form, 'new_ticket': new_ticket})
 
 @login_required()
 def accueil(request):
@@ -259,4 +259,4 @@ def new_review(request):
     else:
         ticket_form = NewTicket()
 
-    return render(request, 'reviews/new_review.html', {'form_new': form_new})
+    return render(request, 'reviews/review_create.html', {'form_new': form_new})
