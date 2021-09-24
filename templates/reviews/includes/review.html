@@ -1,25 +1,40 @@
-<header class="review-header">
-  <p>{{ review.user }} a posté une critique.</p>
-  <p>{{ review.time_created }}</p>
-</header>
+<div class="bg-white text-dark container-auto w-100 px-4 py-2 card mb-4 rounded-3 border border-2 border-warning">
+  <header>
+    <div class="d-flex flex-column border-bottom lh-1">
+      <p class="text-end fst-italic opacity-75">{{ review.time_created }}</p>
+
+      {% if review.user != request.user %}
+      <p class="mx-3">{{ ticket.user }} a posté une critique.</p>
+
+      {% else %}
+      <p class="mx-3"> Vous avez posté une critique.</p>
+
+      {% endif %}
+    </div>
+  </header>
+  <section>
 
 <section class="bg-white text-dark container-auto w-100 px-4 py-2 card mb-4 rounded-3 border border-2 border-warning">
-    <h3>{{ review.headline }}</h3>
-    <p>{{ review.rating }}</p>
+    <h3 class="text-center my-3">{{ review.headline }} - {{ review.rating }}</h3>
     {% if review.body %}
       <p>{{ review.body }}</p>
     {% endif %}
-    {% if review.user == request.user %}
-  <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{review.id}}';">Editer</button>
-    <form action="review_delete/{{review.id}}/" method="post">
-        {% csrf_token %}
-        <p><input type="submit" value="Supprimer" />
-        <input type="submit" >
-    </form>
-    {% endif %}
+
+    <div class="d-flex flex-row flex-wrap justify-content-end align-items-end">
+      {% if review.user == request.user %}
+      <p><button type="button" onclick="window.location.href='/reviews/review_edit/{{review.id}}';"  class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold">Editer</button>
+
+      <form action="review_delete/{{review.id}}/" method="post">
+          {% csrf_token %}
+          <p><input type="submit" value="Supprimer" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold" />
+      </form>
+      {% endif %}
+    </div>
 
     <section class="inner-ticket">
-      {% include './ticket.html' with ticket=review.ticket %}
+      {% include './ticket_answered_feed.html' with ticket=review.ticket %}
     </section>
 
 </section>
+
+</div>

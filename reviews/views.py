@@ -1,7 +1,7 @@
 from itertools import chain
 
 from django import forms
-from .forms import SignUpForm, AnswerTicket, NewTicket
+from .forms import SignUpForm, ReviewForm, TicketForm
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
@@ -23,7 +23,7 @@ def answer_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
 
     if request.method == 'POST':
-        review_form = AnswerTicket(data=request.POST)
+        review_form = ReviewForm(data=request.POST)
 
         if review_form.is_valid():
             new_review = review_form.save(commit=False)
@@ -33,9 +33,9 @@ def answer_ticket(request, ticket_id):
             return redirect('own_posts')
 
     else:
-        review_form = AnswerTicket()
+        review_form = ReviewForm()
 
-    return render(request, 'reviews/ticket_answer.html', {'ticket': ticket,
+    return render(request, 'reviews/review_create.html', {'ticket': ticket,
                 'review_form': review_form, 'new_review': new_review, 'ticket_id': ticket_id})
 
 
@@ -44,7 +44,7 @@ def new_ticket(request):
     new_ticket = None
 
     if request.method == 'POST':
-        ticket_form = NewTicket(request.POST, request.FILES)
+        ticket_form = TicketForm(request.POST, request.FILES)
 
         if ticket_form.is_valid():
             new_ticket = ticket_form.save(commit=False)
@@ -53,7 +53,7 @@ def new_ticket(request):
             return redirect('own_posts')
 
     else:
-        ticket_form = NewTicket()
+        ticket_form = TicketForm()
 
     return render(request, 'reviews/ticket_create.html', {'ticket_form': ticket_form, 'new_ticket': new_ticket})
 
@@ -201,7 +201,7 @@ def follow(request, followee_id):
 def ticket_edit(request, ticket_id):
     original = get_object_or_404(Ticket, pk=ticket_id)
     if request.method == "POST":
-        form = NewTicket(request.POST, request.FILES)
+        form = TicketForm(request.POST, request.FILES)
 
         if form.is_valid():
             updated = form.save(commit=False)
@@ -213,7 +213,7 @@ def ticket_edit(request, ticket_id):
             return redirect('/')
 
     else:
-        form = NewTicket()
+        form = TicketForm(instance=original)
 
     return render(request, 'reviews/ticket_edit.html', {'form': form,
                 'ticket_id': ticket_id})
@@ -222,7 +222,7 @@ def ticket_edit(request, ticket_id):
 def review_edit(request, review_id):
     original = get_object_or_404(Review, pk=review_id)
     if request.method == "POST":
-        form = AnswerTicket(request.POST)
+        form = ReviewForm(request.POST)
 
         if form.is_valid():
             updated = form.save(commit=False)
@@ -234,10 +234,10 @@ def review_edit(request, review_id):
             return redirect('/')
 
     else:
-        form = AnswerTicket()
+        form = ReviewForm(instance=original)
 
     return render(request, 'reviews/review_edit.html', {'form': form,
-                'review_id': review_id})
+                'review_id': review_id, 'original': original})
 
 #NON-FUNCTIONAL
 @login_required()
@@ -247,8 +247,8 @@ def new_review(request):
     form_new = {"review_form": review_form, "ticket_form": ticket_form}
 
     if request.method == 'POST':
-        ticket_form = NewTicket(data=request.POST)
-        review_form = AnswerTicket(data=request.POST)
+        ticket_form = TicketForm(data=request.POST)
+        review_form = ReviewForm(data=request.POST)
 
         if ticket_form.is_valid():
             new_ticket = ticket_form.save(commit=False)
@@ -257,6 +257,6 @@ def new_review(request):
             return redirect('own_posts')
 
     else:
-        ticket_form = NewTicket()
+        ticket_form = TicketForm()
 
     return render(request, 'reviews/review_create.html', {'form_new': form_new})

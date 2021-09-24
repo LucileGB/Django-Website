@@ -1,0 +1,17 @@
+    <form method="post">
+      <div class="d-flex flex-column justify-content-center">
+        {% csrf_token %}
+        <h3 class="mt-2">Titre</h3>
+        <p>{{review_form.headline}}</p>
+
+        <h3 class="mt-2">Note</h3>
+        <p>{{review_form.rating}}</p>
+
+        <h3 class="mt-2">Commentaire (optionnel)</h3>
+        <p>{{review_form.body}}</p>
+      </div>
+
+      <div class="d-flex flex-column align-items-center">
+        <button type="submit" class="btn btn-outline-light text-dark bg-warning shadow-sm me-2 fs-6 fw-bold">Poster</button>
+      </div>
+    </form>

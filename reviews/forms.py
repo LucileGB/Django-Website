@@ -13,14 +13,17 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'password1', 'password2')
 
 
-class NewTicket(forms.ModelForm):
+class TicketForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput(attrs={'size': '78'}))
+    description = forms.CharField(widget=forms.Textarea(attrs={'cols': '75', 'rows': '10'}))
+
     class Meta:
         model = Ticket
         fields = ('title', 'description', 'image')
 
 
-class AnswerTicket(forms.ModelForm):
-    headline = forms.CharField(widget=forms.TextInput(attrs={'size': '50'}))
+class ReviewForm(forms.ModelForm):
+    headline = forms.CharField(widget=forms.TextInput(attrs={'size': '78'}))
     rating = forms.IntegerField(widget=forms.NumberInput(attrs={'size': '3', 'min': '1','max': '5'}))
     body = forms.CharField(widget=forms.Textarea(attrs={'cols': '75', 'rows': '10'}))
     class Meta:

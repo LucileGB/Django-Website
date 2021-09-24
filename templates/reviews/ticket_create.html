@@ -6,21 +6,9 @@
 
   <section class="d-flex flex-column justify-content-center align-items-center">
     <h1>Créer un ticket</h1>
-      <form method="post" enctype="multipart/form-data" class="my-5">
-        {% csrf_token %}
-          <h3 class="mt-3">Titre</h3>
-          <p>{{ticket_form.title}}</p>
 
-          <h3 class="mt-3">Détaillez votre demande</h3>
-          <p>{{ticket_form.description}}</p>
+    {% include './includes/ticket_form.html' with ticket_form=ticket_form %}
 
-          <h3 class="mt-3">Couverture (optionnelle)</h3>
-          <p>{{ticket_form.image}}</p>
-
-        <div class="d-flex justify-content-end my-4">
-          <button type="submit" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold">Poster</button>
-        </div>
-      </form>
   </section>
 
 {% endblock content %}
