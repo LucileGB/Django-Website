@@ -58,7 +58,7 @@ def new_ticket(request):
     return render(request, 'reviews/ticket_create.html', {'ticket_form': ticket_form, 'new_ticket': new_ticket})
 
 @login_required()
-def accueil(request):
+def feed(request):
     reviews = Review.get_users_viewable_reviews(request)
     own_reviews = Review.get_users_own_reviews(request)
     tickets = Ticket.get_users_viewable_tickets(request)

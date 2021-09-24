@@ -41,6 +41,10 @@ class Review(models.Model):
     def get_users_own_reviews(request):
         return Review.objects.filter(user__id__contains=request.user.id)
 
+    @property
+    def star_rating(self):
+        return (self.rating*"★")
+
     def __str__(self):
         return self.headline
 
