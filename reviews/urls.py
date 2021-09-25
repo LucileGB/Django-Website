@@ -13,10 +13,8 @@ urlpatterns = [
     path('subscriptions', views.subscriptions, name='subscriptions'),
     path('follow/<int:followee_id>/', views.follow, name='follow'),
     path('unfollow/<int:relationship_id>/', views.unfollow, name='unfollow'),
-    path('review/<int:review_id>/', views.review, name='review'),
     path('review_delete/<int:review_id>/', views.review_delete, name='review_delete'),
     path('review_edit/<int:review_id>/', views.review_edit, name='review_edit'),
-    path('ticket/<int:ticket_id>/', views.ticket, name='ticket'),
     path('ticket_delete/<int:ticket_id>/', views.ticket_delete, name='ticket_delete'),
     path('ticket_edit/<int:ticket_id>/', views.ticket_edit, name='ticket_edit'),
 ]

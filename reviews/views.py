@@ -125,20 +125,6 @@ def new_account(request):
 
     return render(request,'reviews/new_account.html', {'form':form})
 
-def ticket(request, ticket_id):
-    try:
-        ticket = Ticket.objects.get(pk=ticket_id)
-    except Ticket.DoesNotExist:
-        raise Http404("Ce ticket n'existe pas")
-    return render(request, 'reviews/includes/ticket.html', {'ticket': ticket})
-
-def review(request, review_id):
-    try:
-        review = Review.objects.get(pk=review_id)
-    except Review.DoesNotExist:
-        raise Http404("Ce commentaire n'existe pas")
-    return render(request, 'reviews/includes/review.html', {'review': review})
-
 @login_required
 def subscriptions(request):
     following = UserFollows.objects.filter(followed_user__id__contains=request.user.id)
