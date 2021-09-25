@@ -4,7 +4,7 @@
       <p class="text-end fst-italic opacity-75">{{ review.time_created }}</p>
 
       {% if review.user != request.user %}
-      <p class="mx-3">{{ ticket.user }} a posté une critique.</p>
+      <p class="mx-3">{{ review.user }} a posté une critique.</p>
 
       {% else %}
       <p class="mx-3"> Vous avez posté une critique.</p>

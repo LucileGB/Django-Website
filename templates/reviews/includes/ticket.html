@@ -15,7 +15,7 @@
   <section>
     <div class="d-flex flex-row align-items-start">
     {% if ticket.image %}
-      <p><img src="{{ticket.image.url}}" alt="Couverture correspondant à {{ticket.title}}" class="img-fluid max-width: 25% img-thumbnail my-2"/></p>
+      <p><img src="{{ticket.image.url}}" alt="Couverture correspondant à {{ticket.title}}" class="img-fluid max-width: 10% img-thumbnail my-2"/></p>
     {% endif %}
 
       <div class="d-flex flex-column justify-content-end mx-3 text-wrap">
@@ -27,13 +27,18 @@
     <div class="d-flex flex-row flex-wrap justify-content-end align-items-end">
 
       {% if ticket.user != request.user %}
-      <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{ticket.id}}';" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold"> Répondre à ce ticket</button>
+        {% if ticket.id in answered %}
+         <p class="text-end fst-italic opacity-75">Vous avez déjà répondu à ce ticket.</p>
 
         {% else %}
-        <p><button type="button" onclick="window.location.href='/reviews/ticket_edit/{{ticket.id}}';" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold">Editer</button>
-          <form action="ticket_delete/{{ticket.id}}/" method="post">
-              {% csrf_token %}
-        <p><input type="submit" value="Supprimer" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold"/></p>
+          <p><button type="button" onclick="window.location.href='/reviews/answer_ticket/{{ticket.id}}';" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold"> Répondre à ce ticket</button>
+        {% endif %}
+
+      {% else %}
+      <p><button type="button" onclick="window.location.href='/reviews/ticket_edit/{{ticket.id}}';" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold">Editer</button>
+        <form action="ticket_delete/{{ticket.id}}/" method="post">
+          {% csrf_token %}
+          <p><input type="submit" value="Supprimer" class="btn btn-outline-dark text-dark bg-warning shadow-sm me-2 fs-6 fw-bold"/></p>
         </form>
         {% endif %}
     </div>

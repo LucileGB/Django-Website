@@ -1,0 +1,50 @@
+{% extends "base_rev.html" %}
+
+{% block title %} LITReview - Critique spontanée {% endblock title %}
+
+{% block content %}
+
+  <section class="d-flex flex-column justify-content-center align-items-center">
+    <h2>Créer une critique</h2>
+    <form method="post" enctype="multipart/form-data" class="my-5">
+      {% csrf_token %}
+      <div class="bg-light text-dark container-auto w-100 px-4 py-2 card mb-4 rounded-3 border border-2 border-warning">
+        <div class="border-bottom mb-3">
+        <h3 class="text-end fst-italic opacity-75">Livre/article</h3>
+        </div>
+        <h4 class="mt-2 fw-bold">Titre</h4>
+        <p>{{ticket_form.title}}</p>
+
+        <h4 class="mt-2 fw-bold">Description</h4>
+        <p>{{ticket_form.description}}</p>
+
+        <h4 class="mt-2 fw-bold">Image (optionnelle)</h4>
+        <p>{{ticket_form.image}}</p>
+      </div>
+
+      <div class="bg-light text-dark container-auto w-100 px-4 py-2 card mb-4 rounded-3 border border-2 border-warning">
+        <div class="border-bottom mb-3">
+          <h3 class="text-end fst-italic opacity-75">Critique</h3>
+        </div>
+
+        <h4 class="mt-2 fw-bold">Titre</h4>
+        <p>{{review_form.headline}}</p>
+
+        <h4 class="mt-2 fw-bold">Note</h4>
+        <p>{{review_form.rating}}</p>
+
+        <h4 class="mt-2 fw-bold">Commentaire</h4>
+        <p>{{review_form.body}}</p>
+      </div>
+
+
+      <div class="d-flex justify-content-end my-4">
+        <button type="submit" class="btn btn-outline-light text-dark bg-warning me-2 fs-5 fw-bold">Poster</button>
+      </div>
+    </form>
+
+  </section>
+  </section>
+
+
+{% endblock content %}

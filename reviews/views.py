@@ -15,7 +15,7 @@ from django.views.generic.edit import UpdateView
 
 from .models import Ticket, Review, UserFollows, user_follows
 
-# Views in themselves
+
 @login_required()
 def answer_ticket(request, ticket_id):
     new_review = None
@@ -66,14 +66,14 @@ def feed(request):
 
     # returns queryset of reviews
     if len(reviews) > 0:
-        reviews = reviews[0].annotate(content_type=Value('REVIEW', CharField()))
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
     if len(own_reviews) > 0:
         own_reviews = own_reviews.annotate(content_type=Value('REVIEW', CharField()))
 
     # returns queryset of tickets
     if len(tickets) > 0:
-        tickets = tickets[0].annotate(content_type=Value('TICKET', CharField()))
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
     if len(own_tickets) > 0:
         own_tickets = own_tickets.annotate(content_type=Value('TICKET', CharField()))
@@ -83,7 +83,9 @@ def feed(request):
         key=lambda post: post.time_created,
         reverse=True)
 
-    return render(request, 'reviews/feed.html', context={'posts': posts})
+    answered = [review.ticket_id for review in own_reviews]
+
+    return render(request, 'reviews/feed.html', context={'posts': posts, 'answered': answered})
 
 @login_required()
 def own_posts(request):
@@ -156,18 +158,27 @@ def subscriptions(request):
 
     return render(request, 'reviews/subscriptions.html', {"following": following, "followed": followed})
 
+@login_required
 def ticket_delete(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
 
+    if request.user != ticket.user:
+        raise PermissionDenied
+
     if request.method == 'POST':
+        Ticket.objects.get(id=ticket_id).image.delete(save=True)
         ticket.delete()
         messages.success(request,"Votre ticket a bien été supprimé.")
         return redirect('/')
 
     return render(request, 'reviews/feed_own.html', {'ticket': ticket})
 
+@login_required
 def review_delete(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
+
+    if request.user != review.user:
+        raise PermissionDenied
 
     if request.method == 'POST':
         review.delete()
@@ -197,9 +208,14 @@ def follow(request, followee_id):
 
     return render(request, 'reviews/subscriptions.html', {'follow': follow})
 
+from django.core.exceptions import PermissionDenied
+
 @login_required
 def ticket_edit(request, ticket_id):
     original = get_object_or_404(Ticket, pk=ticket_id)
+    if request.user != original.user:
+        raise PermissionDenied
+
     if request.method == "POST":
         form = TicketForm(request.POST, request.FILES)
 
@@ -221,6 +237,9 @@ def ticket_edit(request, ticket_id):
 @login_required
 def review_edit(request, review_id):
     original = get_object_or_404(Review, pk=review_id)
+    if request.user != original.user:
+        raise PermissionDenied
+
     if request.method == "POST":
         form = ReviewForm(request.POST)
 
@@ -239,24 +258,29 @@ def review_edit(request, review_id):
     return render(request, 'reviews/review_edit.html', {'form': form,
                 'review_id': review_id, 'original': original})
 
-#NON-FUNCTIONAL
 @login_required()
-def new_review(request):
-    new_ticket = None
+def spontaneous_review(request):
     new_review = None
-    form_new = {"review_form": review_form, "ticket_form": ticket_form}
+    new_ticket = None
 
     if request.method == 'POST':
-        ticket_form = TicketForm(data=request.POST)
-        review_form = ReviewForm(data=request.POST)
+        ticket_form = TicketForm(request.POST, request.FILES)
+        review_form = ReviewForm(request.POST)
 
-        if ticket_form.is_valid():
+        if review_form.is_valid() and ticket_form.is_valid():
             new_ticket = ticket_form.save(commit=False)
             new_ticket.user = request.user
             new_ticket.save()
+
+            new_review = review_form.save(commit=False)
+            new_review.ticket = new_ticket
+            new_review.user = request.user
+            new_review.save()
             return redirect('own_posts')
 
     else:
+        review_form = ReviewForm()
         ticket_form = TicketForm()
 
-    return render(request, 'reviews/review_create.html', {'form_new': form_new})
+    return render(request, 'reviews/ticket_and_review.html', {'review_form': review_form,
+                'ticket_form': ticket_form, 'new_review': new_review, 'new_ticket': new_ticket})

@@ -70,5 +70,6 @@ def get_users_viewable_content(request, Target):
     friends = user_follows(request)
     viewable_content = []
     for friend in friends:
-        viewable_content.append(Target.objects.filter(user__id__contains=friend))
+        viewable_content = (Target.objects.filter(user__id__contains=friend))
+
     return viewable_content
