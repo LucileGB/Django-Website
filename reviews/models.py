@@ -4,7 +4,6 @@ from django.db import models
 
 
 class Ticket(models.Model):
-    #foreign key is User; change formula
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -48,23 +47,25 @@ class Review(models.Model):
     def __str__(self):
         return self.headline
 
+
 class UserFollows(models.Model):
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='following')
-    followed_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-        related_name='followed_by')
+    followed_user = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                    on_delete=models.CASCADE,
+                                    related_name='followed_by')
 
     class Meta:
-        # ensures we don't get multiple UserFollows instances
-        # for unique user-user_followed pairs
         unique_together = ('user', 'followed_user')
+
 
 #Model-related utilities to fetch view components
 def user_follows(request):
     follows = UserFollows.objects.filter(user__id__contains=request.user.id)
     friends = [followed.followed_user.id for followed in follows]
     return(friends)
+
 
 def get_users_viewable_content(request, Target):
     friends = user_follows(request)
