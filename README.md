@@ -6,7 +6,7 @@ People can follow other users to see their requests or answer their tickets with
 ## SETTING UP YOUR ENVIRONMENT AND LAUNCHING THE PROJECT
 To launch the project, first download the relevant files. Once you've installed the virtual environment of your choice, please install the content of requirement.txt:
 
->> -r requirements.txt
+> -r requirements.txt
 
 Then, navigate with the console up to the folder where you've installed the application. Ensure that you are at the same folder level than manage.py and type the following:
 
