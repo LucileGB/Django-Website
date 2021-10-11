@@ -216,6 +216,7 @@ def unfollow(request, relationship_id):
 @login_required
 def feed(request):
     reviews = Review.get_users_viewable_reviews(request)
+    reviews_from_nonfollowed = Ticket.nonfollowed_reviews(request)
     own_reviews = Review.get_users_own_reviews(request)
     tickets = Ticket.get_users_viewable_tickets(request)
     own_tickets = Ticket.get_users_own_tickets(request)
@@ -223,6 +224,9 @@ def feed(request):
     # returns queryset of reviews
     if len(reviews) > 0:
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+
+    if len(reviews_from_nonfollowed) > 0:
+        reviews_from_nonfollowed = reviews_from_nonfollowed.annotate(content_type=Value('REVIEW', CharField()))
 
     if len(own_reviews) > 0:
         own_reviews = own_reviews.annotate(content_type=Value('REVIEW', CharField()))
@@ -235,7 +239,7 @@ def feed(request):
         own_tickets = own_tickets.annotate(content_type=Value('TICKET', CharField()))
     # combine and sort the two types of posts
     posts = sorted(
-        chain(reviews, tickets, own_reviews, own_tickets),
+        chain(reviews, tickets, own_reviews, own_tickets, reviews_from_nonfollowed),
         key=lambda post: post.time_created,
         reverse=True)
 

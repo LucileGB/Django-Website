@@ -18,6 +18,14 @@ class Ticket(models.Model):
     def get_users_own_tickets(request):
         return Ticket.objects.filter(user__id__contains=request.user.id)
 
+    @staticmethod
+    def nonfollowed_reviews(request):
+        friends = user_follows(request)
+        answers = Review.objects.filter(ticket__user__id__contains=request.user.id
+        ).exclude(user__id__in=friends)
+
+        return answers
+
     def __str__(self):
         return self.title
 
@@ -34,6 +42,9 @@ class Review(models.Model):
 
     @staticmethod
     def get_users_viewable_reviews(request):
+        """Return every viewable reviews, except answers from non-followed users,
+        which are dealt with by Ticket.nonfollowed_reviews()
+        """
         return get_users_viewable_content(request, Review)
 
     @staticmethod
