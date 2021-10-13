@@ -30,6 +30,7 @@ To be able to interact with the app, you need to launch the server. To do so, na
 This will launch the server, ensuring that the site is working locally. If you kept the test database, admin ids are the followings:
 
 Username:  LucileG
+
 Password: HYPATIAè
 
 You can now interact with Django's admin console at http://127.0.0.1:8000/admin/, or you can explore the project at http://127.0.0.1:8000/. You can create users either in the admin console or through the login screen.
